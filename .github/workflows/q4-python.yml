@@ -1,5 +1,11 @@
 name: Python
 
+on:
+  workflow_dispatch:
+    inputs:
+      botao:
+        description: "Iniciar Workflow"
+        default: "Realizar build, incluindo a execução de testes unificados"
 
 jobs:
   build:
@@ -21,3 +27,12 @@ jobs:
 
       - name: Check
         run: python -m py_compile src/main.py
+
+      - name: Test
+        run: pytest
+
+      - name: Build
+        run: docker build -t api
+
+      - name: Executar
+        run: docker run -d --name api -p 8080:8080 api
